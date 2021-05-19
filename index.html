@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles/main.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+        integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&amp;display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <!--All modals-->
+    <div class="modal-parent d-none">
+        <div class="modal">
+            <header class="modal-header">
+                <h2 class="heading">Настройки</h2>
+                <i class="fas fa-times close"></i>
+            </header>
+            <div class="modal-content">
+                
+            </div>
+        </div>
+    </div>
+
+    <div class="left-flex">
+        <ul class="left-menu">
+            <li class="menu-item" data-open="app-info"><i class="fas fa-info"></i></li>
+            <li class="menu-item" data-open="team-board"><i class="fas fa-users"></i></li>
+            <li class="menu-item" data-open="app-settings"><i class="fas fa-cog"></i></li>
+        </ul>
+    </div>
+    <div class="center-flex">
+        <div class="app-wrapper">
+            <h1 class="heading app-heading">Team Generator</h1>
+            <div class="group">
+                <label for="people" class="input-instruction">Въведете имената на хората, всяко на нов ред:</label>
+                <textarea name="people" id="people"></textarea>
+                <p class="people-counter">People: <span class="people-count"></span></p>
+            </div>
+            <div class="group">
+                <label for="team-count" class="input-instruction">Колко отбора искате да сформирате?</label>
+                <input type="number" id="team-count" name="team-count" min="0">
+            </div>
+            <div class="group">
+                <label for="team-names" class="input-instruction">Ако искате отборите да имат имена, напишете ги тук,
+                    всяко на нов ред:</label>
+                <input type="text" id="team-names" name="team-names">
+            </div>
+            <button type="button" class="btn generate-teams">Генерирай отборите</button>
+        </div>
+    </div>
+    <div class="right-flex">
+        <div class="message-container hidden">
+            <h4 class="status-heading"></h4>
+            <p class="status-info"></p>
+        </div>
+    </div>
+    <script src="scripts/modals.js"></script>
+    <script src="scripts/main.js"></script>
+    <script src="scripts/teams.js"></script>
+</body>
+
+</html>

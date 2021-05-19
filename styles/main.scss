@@ -1,0 +1,203 @@
+@import "utilities";
+*,
+*::before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+::selection {
+  color: $blue-color;
+}
+
+body {
+  background-color: $blue-color;
+  min-height: 100vh;
+  display: flex;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+  .left-flex,
+  .right-flex,
+  .center-flex {
+    display: flex;
+    height: 100vh;
+    align-items: center;
+    flex: 1;
+  }
+  .left-flex {
+    justify-content: flex-start;
+  }
+  .center-flex {
+    justify-content: center;
+    flex: 1.5;
+  }
+  .right-flex {
+    justify-content: flex-end;
+  }
+}
+
+p {
+  line-height: 1.8;
+  margin: 10px 0;
+  text-align: justify;
+}
+
+select {
+    color: #fff;
+    border: 1px solid $blue-color;
+    padding: 5px;
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    background: url('../images/drop-down-arrow.svg') no-repeat right;
+    background-size: 25px;
+    background-position-x: 96%;
+}
+
+.modal-parent {
+    label {
+        display: block;
+        margin: 10px 0;
+    }
+  &#app-info {
+    .modal-content {
+        
+      .heading {
+        text-align: left;
+        margin-top: 10px;
+        padding: 10px 0;
+        font-size: 20px;
+        border-bottom: 1px solid $blue-color;
+      }
+      .info-part-text {
+        padding: 10px 0;
+        .list {
+          margin: 0 40px;
+          line-height: 1.8;
+          li {
+            margin: 10px 0;
+          }
+        }
+      }
+      
+    }
+  }
+  &#team-board {
+    .modal {
+      .sort-lists {
+        display: flex;
+        justify-content: space-between;
+        text-align: center;
+        border-bottom: 1px solid $blue-color;
+        padding: 5px 20px;
+        select{
+            margin: 10px 0;
+            display: block;
+        }
+    }
+
+        .no-teams {
+            text-align: center;
+        }
+        .modal-content {
+          padding-top: 10px;
+          padding-bottom: 10px;
+  }
+}
+    }
+      
+
+  &#app-settings {
+      .modal {
+          width: 30%;
+          .modal-content {
+            padding-top: 20px;
+            padding-bottom: 20px;
+          select {
+              margin-top: 15px;
+              margin-bottom: 25px;
+              width: 100%;
+          }
+          .btn {
+              background-color: $green-color;
+              text-align: center
+          }
+        }
+       
+    }
+      }
+      
+}
+
+ul.left-menu {
+  display: inline-block;
+  color: #fff;
+  list-style: none;
+
+  li {
+    border: 1px solid #fff;
+    border-left: 0;
+    margin-bottom: 30px;
+    text-align: center;
+    padding: 0.45rem 2rem;
+    font-size: 1.2rem;
+  }
+}
+
+.app-wrapper {
+  flex: 2;
+  align-self: center;
+  background-color: $gray-color;
+  color: #fff;
+  padding: 2rem;
+  max-width: 800px;
+  .group {
+    margin: 20px 0;
+    label.input-instruction {
+      display: block;
+      margin: 10px 0;
+    }
+    .people-counter {
+      text-align: right;
+      margin-top: 5px;
+    }
+    textarea,
+    input {
+      width: 100%;
+      padding: 5px;
+      appearance: textfield;
+    }
+    textarea {
+      resize: none;
+      height: 100px;
+    }
+  }
+  button {
+    width: 100%;
+    background-color: $blue-color;
+    color: #fff;
+  }
+}
+
+.message-container {
+  align-self: flex-end;
+  background-color: $gray-color;
+  text-align: center;
+  line-height: 1.8rem;
+  padding: 20px;
+
+  &.hidden {
+    opacity: 0;
+
+  }
+  .status-info {
+    font-size: 12px;
+    text-align: center;
+  }
+
+  &.fail {
+    color: red;
+  }
+  &.success {
+    color: $green-color;
+  }
+}
