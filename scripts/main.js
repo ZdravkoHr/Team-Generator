@@ -3,6 +3,8 @@ const teamsCountField = document.querySelector('input#team-count');
 const teamsNamesField = document.querySelector('textarea#team-names');
 const generateButton = document.querySelector('.btn.generate-teams');
 const menuIcons = document.querySelectorAll('.left-menu .menu-item');
+const messageContainer = document.querySelector('.message-container');
+
 const settingsInfo = {
 	formingTeams: {
 		oddMembersAllow: 'true',
@@ -34,7 +36,7 @@ namesField.value = `Атанас
 Христо Добриков`;
 teamsCountField.value = '2';
 teamsNamesField.value = `a
-\nb`;
+b`;
 
 const getMembers = () => namesField.value.split('\n').filter(Boolean);
 const getRandomNum = (min, max) => Math.floor(Math.random() * max) + min;
@@ -51,7 +53,7 @@ function generateTeams() {
 		allowOdd,
 	});
 	console.log(teamsInfo);
-	addToBoard(teamsInfo, teamsNames);
+	addToBoard(teamsInfo);
 }
 
 function setPeopleCount() {
@@ -62,7 +64,7 @@ function setPeopleCount() {
 	});
 }
 
-function addToBoard(info, teamNames) {
+function addToBoard(info) {
 	modalContent.innerHTML = ''; // I do this to clear the message that says they are no teams
 	const [teams, excludedMembers] = info;
 	if (!teams) {
@@ -73,12 +75,7 @@ function addToBoard(info, teamNames) {
 
 	Object.keys(teams).forEach((team, i) => {
 		const members = teams[team];
-		let heading;
-		if (teamNames.length > 0) {
-			const randomNum = getRandomNum(0, teamNames.length);
-			heading = teamNames[randomNum] + ':';
-			teamNames.splice(randomNum, 1);
-		} else heading = `Team ${i + 1}:`;
+		let heading = team + ':';
 
 		modalContent.innerHTML += `<div class="team team-${
 			i + 1
@@ -92,9 +89,9 @@ function addToBoard(info, teamNames) {
 		});
 	});
 
-	setTimeout(() => {
-		if (excludedMembers) addExcludedMembers(excludedMembers);
-	}, 1000);
+	if (excludedMembers.length) addExcludedMembers(excludedMembers);
+
+	showMessage(true);
 }
 
 function addExcludedMembers(members) {
@@ -110,16 +107,18 @@ function addExcludedMembers(members) {
 }
 
 function showMessage(status) {
-	const messageContainer = document.querySelector('.message-container');
 	const heading = document.querySelector('.message-container .status-heading');
 	const info = document.querySelector('.message-container .status-info');
 	messageContainer.classList.remove('hidden');
+	messageContainer.classList.remove('d-none');
 
 	if (status) {
+		messageContainer.dataset.status = 'success';
 		messageContainer.classList.add('success');
 		heading.textContent = 'The teams are ready';
 		info.textContent = 'Click to see them';
 	} else {
+		messageContainer.dataset.status = 'fail';
 		messageContainer.classList.add('fail');
 		heading.textContent = 'Something went wrong';
 		info.textContent = 'Please check your input';
@@ -129,6 +128,7 @@ function showMessage(status) {
 }
 
 function startFadingAway(container) {
+	console.log(container);
 	container.style.transition = '5s';
 	container.classList.add('hidden');
 
@@ -136,15 +136,20 @@ function startFadingAway(container) {
 		() => container.classList.add('d-none'),
 		5000
 	);
-	container.addEventListener('mouseover', () => {
-		container.style.transition = '0s';
-		container.classList.remove('hidden');
-		clearTimeout(disappearTimeout);
-	});
-	container.addEventListener('mouseleave', () => {
-		startFadingAway(container);
-	});
+
+	container.dataset.timeout = disappearTimeout;
 }
+
+const mouseoverHandler = function () {
+	this.style.transition = '0s';
+	this.classList.remove('hidden');
+	clearTimeout(this.dataset.timeout);
+};
+
+messageContainer.addEventListener('mouseover', mouseoverHandler);
+messageContainer.addEventListener('mouseleave', () =>
+	startFadingAway(messageContainer)
+);
 
 const noResults = () => `<p class="no-teams">No teams formed yet.</p>`;
 
@@ -153,4 +158,9 @@ menuIcons.forEach(icon => {
 	icon.addEventListener('click', openModal);
 });
 namesField.addEventListener('keydown', setPeopleCount);
+
+messageContainer.addEventListener('click', () => {
+	messageContainer.dataset.status === 'success' && openModal();
+});
+
 setPeopleCount();
