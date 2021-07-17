@@ -1,6 +1,6 @@
 const namesField = document.querySelector('textarea#people');
 const teamsCountField = document.querySelector('input#team-count');
-const teamsNamesField = document.querySelector('input#team-names');
+const teamsNamesField = document.querySelector('textarea#team-names');
 const generateButton = document.querySelector('.btn.generate-teams');
 const menuIcons = document.querySelectorAll('.left-menu .menu-item');
 const settingsInfo = {
@@ -41,13 +41,16 @@ const getRandomNum = (min, max) => Math.floor(Math.random() * max) + min;
 
 function generateTeams() {
 	const members = getMembers();
-	const teamsCount = Number(teamsCountField.value);
-	const teamsNames = teamsNamesField.value.split('\n').filter(Boolean);
-	const teamsInfo = createTeams(
+	const teamCount = Number(teamsCountField.value);
+	const teamNames = teamsNamesField.value.split('\n').filter(Boolean);
+	const allowOdd = settingsInfo.formingTeams.oddMembersAllow;
+	const teamsInfo = createTeams({
 		members,
-		teamsCount,
-		settingsInfo.formingTeams.oddMembersAllow
-	);
+		teamCount,
+		teamNames,
+		allowOdd,
+	});
+	console.log(teamsInfo);
 	addToBoard(teamsInfo, teamsNames);
 }
 

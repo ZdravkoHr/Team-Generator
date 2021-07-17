@@ -1,46 +1,33 @@
-let peopleCount = getMembers().length;
-const isInvalid = (count, length) => {
-    return count > peopleCount || Math.floor(count) !== count || count < 0 || !count;
-}
+const isInvalid = (count, peopleCount) => {
+	return (
+		count > peopleCount || Math.floor(count) !== count || count < 0 || !count
+	);
+};
 
-function createTeams(names, teamsCount, allowOddTeams) {
-    names = names.map(i => i.trim()).filter(Boolean);
-    peopleCount = getMembers().length;
-    if (isInvalid(teamsCount, peopleCount)) return [];
-    
-    const teams = {};
-    
-    if (peopleCount % teamsCount === 0 || allowOddTeams == 'true') {
-        let inWhichTeam = 0;
-        for (let i = 1; i <= peopleCount; i++){
-            let randomNum = ~~(Math.random() * names.length) + 0;
-            let currentPerson = names[randomNum];
-            inWhichTeam++;
-            if (inWhichTeam > teamsCount) inWhichTeam = 1;
-            let team = `team${inWhichTeam}`;
-            if (!(Object.keys(teams).some(j => j === team))) {
-                teams[team] = [];
-            }
-            teams[team].push(currentPerson);
-            names.splice(randomNum, 1);
-        }
-    }
-    
-    else  {
-        let inWhichTeam = 0;
-        let loopTo = peopleCount - peopleCount % teamsCount;
-        for (let i = 1; i <= loopTo; i++){
-            let randomNum = ~~(Math.random() * names.length) + 0;
-            let currentPerson = names[randomNum];
-            inWhichTeam++;
-            if (inWhichTeam > teamsCount) inWhichTeam = 1;
-            let team = `team${inWhichTeam}`;
-            if (!(Object.keys(teams).some(j => j === team))) {
-                teams[team] = [];
-            }
-            teams[team].push(currentPerson);
-            names.splice(randomNum, 1);
-        }
-    }
-    return [teams, names];   
+function createTeams({ members, teamCount, teamNames, allowOdd }) {
+	members = members.map(i => i.trim()).filter(Boolean);
+	const membersCopy = [...members];
+	const membersCount = members.length;
+
+	if (isInvalid(teamCount, membersCount)) return [];
+
+	const teams = {};
+	let teamIndex = 0;
+	const stopIndex =
+		allowOdd === 'true' ? null : membersCount - (membersCount % teamsCount);
+
+	members.forEach((member, index) => {
+		if (index === stopIndex) return;
+		const randomNum = Math.floor(Math.random() * membersCopy.length);
+
+		const teamName = teamNames[teamIndex] || 'Team' + (teamIndex + 1);
+		teams[teamName] =
+			teamName in teams
+				? [...teams[teamName], members[randomNum]]
+				: [members[randomNum]];
+		membersCopy.splice(randomNum, 1);
+		teamIndex = (teamIndex + 1) % teamCount;
+	});
+
+	return [teams, [...membersCopy]];
 }
